@@ -10881,8 +10881,8 @@ the <a class="reference internal" href="#created-outputs">next section</a>.</p>
 <li><a class="reference internal" href="#selecting-test-cases" id="id564">3.4.1&nbsp;&nbsp;&nbsp;Selecting test cases</a><ul>
 <li><a class="reference internal" href="#by-test-suite-and-test-case-names" id="id565">By test suite and test case names</a></li>
 <li><a class="reference internal" href="#by-tag-names" id="id566">By tag names</a></li>
-<li><a class="reference internal" href="#when-no-tests-match-selection" id="id567">When no tests match selection</a></li>
-<li><a class="reference internal" href="#rerunning-failed-tests" id="id568">Rerunning failed tests</a></li>
+<li><a class="reference internal" href="#re-executing-failed-test-cases" id="id567">Re-executing failed test cases</a></li>
+<li><a class="reference internal" href="#when-no-tests-match-selection" id="id568">When no tests match selection</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#setting-criticality" id="id569">3.4.2&nbsp;&nbsp;&nbsp;Setting criticality</a></li>
@@ -11004,8 +11004,31 @@ the tests for a certain iteration can be generated (for example, <span class="cl
 --include iter-42 output.xml</span>).</li>
 </ul>
 </div>
+<div class="section" id="re-executing-failed-test-cases">
+<h4><a class="toc-backref" href="#id567">Re-executing failed test cases</a></h4>
+<p>Command line option <cite>--runfailed (-R)</cite> can be used to select all failed tests
+from an earlier <a class="reference internal" href="#output-file">output file</a> for re-execution. This option is useful, for
+example, if running all tests takes a lot of time and one wants to
+iteratively fix failing test cases.</p>
+<pre class="literal-block">
+pybot tests                           # first execute all tests
+pybot --runfailed output.xml tests    # then re-execute failing
+</pre>
+<p>Behind the scenes this option selects the failed tests as they would have been
+selected individually with the <span class="opt">--test</span> option. It is possible to further
+fine-tune the list of selected tests by using <span class="opt">--test</span>, <span class="opt">--suite</span>,
+<span class="opt">--include</span> and <span class="opt">--exclude</span> options.</p>
+<p>Using an output not originating from executing the same tests that are run
+now causes undefined results. Additionally, it is an error if the output
+contains no failed tests. Using a special value <span class="opt">NONE</span> as the output
+is same as not specifying this option at all.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is a new option in Robot Framework 2.8.</p>
+</div>
+</div>
 <div class="section" id="when-no-tests-match-selection">
-<h4><a class="toc-backref" href="#id567">When no tests match selection</a></h4>
+<h4><a class="toc-backref" href="#id568">When no tests match selection</a></h4>
 <p>By default when no tests match the selection criteria test execution fails
 with an error like:</p>
 <pre class="literal-block">
@@ -11029,22 +11052,6 @@ running tests.</p>
 <p class="last"><span class="opt">--RunEmptySuite</span> option was added Robot Framework 2.6
 and <span class="opt">--ProcessEmptySuite</span> in 2.7.2.</p>
 </div>
-</div>
-<div class="section" id="rerunning-failed-tests">
-<h4><a class="toc-backref" href="#id568">Rerunning failed tests</a></h4>
-<p><cite>--runfailed</cite> command line option can be used to select all failed tests from a
-given output for re-execution. This option is useful for example in situations
-where executing all tests takes a lot of time and one wants to iteratively
-fix failing test cases. This option was added in Robot Framework 2.8.</p>
-<pre class="literal-block">
-pybot tests     (first execute all tests)
-pybot --runfailed output.xml tests    (then re-execute and fix tests)
-</pre>
-<p>If the given output file doesn't contain any failing test cases or value NONE
-is passed as the argument for the command line option, all test cases are
-executed.</p>
-<p>This option will add all the failed test cases as they would have been added
-with the <cite>--test</cite> option.</p>
 </div>
 </div>
 <div class="section" id="setting-criticality">
@@ -16007,7 +16014,7 @@ when <a class="reference internal" href="#starting-test-execution">executing tes
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-R</span>, <span class="option">--runfailed <var>&lt;file&gt;</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td><a class="reference internal" href="#rerunning-failed-tests">Selects failed tests</a> from a previous output file to be re-run.</td></tr>
+<tr><td>&nbsp;</td><td><a class="reference internal" href="#re-executing-failed-test-cases">Selects failed tests</a> from an earlier <a class="reference internal" href="#output-file">output file</a> to be re-executed.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-i</span>, <span class="option">--include <var>&lt;tag&gt;</var></span></kbd></td>
 </tr>
@@ -16872,7 +16879,7 @@ to <a class="reference internal" href="#mailing-lists">mailing list</a>.</p>
 <div class="footer">
 <hr class="footer" />
 <p>Generated by <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>. Syntax highlighting by <a class="reference external" href="http://pygments.org/">Pygments</a>.</p>
-<p>Generated on: 2013-05-17 09:52 UTC.
+<p>Generated on: 2013-05-20 10:54 UTC.
 </p>
 
 </div>
