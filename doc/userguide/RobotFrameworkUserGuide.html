@@ -9155,7 +9155,7 @@ one value per iteration. The syntax starts with <span class="name">:FOR</span>, 
 colon is required to separate the syntax from normal keywords. The
 next cell contains the loop variable, the subsequent cell must have
 <span class="name">IN</span>, and the final cells contain values over which to iterate.
-These values can contain <a class="reference internal" href="#variables">variables</a>.</p>
+These values can contain <a class="reference internal" href="#variables">variables</a>, including <a class="reference internal" href="#list-variables">list variables</a>.</p>
 <p>The keywords used in the for loop are on the next rows and they must
 be indented one cell to the right. The for loop ends when the indentation
 returns back to normal or the table ends. Having nested for loops
@@ -9246,7 +9246,7 @@ second example, loop values are <a class="reference internal" href="#dividing-te
 loop is run altogether five times.</p>
 <div class="tip">
 <p class="first admonition-title">Tip</p>
-<p>If you use for loops in the <a class="reference internal" href="#plain-text-format">plain text format</a>, remember to
+<p>If you use for loops in <a class="reference internal" href="#plain-text-format">plain text format</a> files, remember to
 <a class="reference internal" href="#escaping">escape</a> the indented cell using a backslash:</p>
 <pre class="last literal-block">
 *** Test Case ***
@@ -9306,9 +9306,8 @@ same as with the normal for loop, but all loop variables are listed in
 the cells between <span class="name">:FOR</span> and <span class="name">IN</span>. There can be any number of loop
 variables, but the number of values must be evenly dividable by the number of
 variables.</p>
-<p>This syntax naturally works both with and without list variables. In
-the former case, it is often possible to organize loop values below
-loop variables, as in the first part of the example below:</p>
+<p>If there are lot of values to iterate, it is often convenient to organize
+them below the loop variables, as in the first loop of the example below:</p>
 <table border="1" class="example docutils">
 <caption>Using multiple loop variables</caption>
 <colgroup>
@@ -9589,14 +9588,15 @@ useful when the limits are specified with variables.</p>
 </div>
 <div class="section" id="exiting-for-loop">
 <h4><a class="toc-backref" href="#id509">Exiting for loop</a></h4>
-<p>Normally for loop is executed until all the elements of the loop have been
-looped through or an error occurs and the test case or keyword fails. However
-sometimes execution of a for loop needs to be stopped before all elements of
-the loop have been gone through. <a class="reference internal" href="#builtin-library">BuiltIn keyword</a> <span class="name">Exit For Loop</span> can be
-used to exit the enclosing for loop.</p>
-<p><span class="name">Exit For Loop</span> keyword can be used directly in a for loop or in a keyword
-that the for loop uses. In both cases the test execution continues after the
-for loop. If executed outside of a for loop, the test fails.</p>
+<p>Normally for loops are executed until all the loop values have been iterated
+or a keyword used inside the loop fails. If there is a need to exit the loop
+earlier,  <a class="reference internal" href="#builtin-library">BuiltIn</a> keywords <span class="name">Exit For Loop</span> and <span class="name">Exit For Loop If</span>
+can be used to accomplish that. They works similarly as <span class="code">break</span>
+statement in Python, Java, and many other programming languages.</p>
+<p><span class="name">Exit For Loop</span> and <span class="name">Exit For Loop If</span> keywords can be used
+directly inside a for loop or in a keyword that the loop uses. In both cases
+test execution continues after the loop. It is an error to use these keywords
+outside a for loop.</p>
 <table border="1" class="example docutils">
 <caption>Exit for loop example</caption>
 <colgroup>
@@ -9654,94 +9654,37 @@ for loop. If executed outside of a for loop, the test fails.</p>
 </tr>
 </tbody>
 </table>
-<p>Exiting a for loop can also be initiated from a keyword in a test library by
-raising an exception with <span class="code">ROBOT_EXIT_FOR_LOOP</span> attribute. Please see
-<a class="reference internal" href="#stopping-test-execution">Stopping test execution</a> for examples how to do this in Python and Java
-libraries.</p>
-<p>To conditionally exit for loop, you can use <span class="name">Exit For Loop If</span> instead of <cite>Run Keyword If</cite>. See how to use it in the example of <span class="name">Continue For Loop If</span> below.</p>
+<p>In the above example it would be possible to use <span class="name">Exit For Loop If</span>
+instead of using <span class="name">Exit For Loop</span> with <span class="name">Run Keyword If</span>.
+For more information about these keywords, including more usage examples,
+see their documentation in the <a class="reference internal" href="#builtin-library">BuiltIn</a> library.</p>
 <div class="note">
 <p class="first admonition-title">Note</p>
-<p>Exit for loop functionality is new in Robot Framework 2.5.2.</p>
-<p class="last">Exit For Loop If keyword is new in Robot Framework 2.8.</p>
+<p class="last"><span class="name">Exit For Loop</span> keyword was added Robot Framework 2.5.2 and
+<span class="name">Exit For Loop If</span> in 2.8.</p>
 </div>
 </div>
 <div class="section" id="continuing-for-loop">
 <h4><a class="toc-backref" href="#id510">Continuing for loop</a></h4>
-<p>In addition to exiting a for loop mid-iteration, it is also possible to continue to the next iteration of the loop before all keywords in a for loop have been executed. <a class="reference internal" href="#builtin-library">BuiltIn keyword</a> <span class="name">Continue For Loop</span> can be used to skip rest of the keywords in the enclosing for loop to move on to the next iteration of the loop.</p>
-<p><span class="name">Continue For Loop</span> keyword can be used directly in a for loop or in a keyword that the for loop uses. In both cases the test execution continues with the next iteration of the loop. If executed outside of a for loop, the test fails.</p>
+<p>In addition to exiting a for loop prematurely, it is also possible to
+continue to the next iteration of the loop before all keywords have been
+executed. This can be done using <a class="reference internal" href="#builtin-library">BuiltIn</a> keywords <span class="name">Continue For Loop</span>
+and <span class="name">Continue For Loop If</span>, that work like <span class="code">continue</span> statement
+in many programming languages.</p>
+<p><span class="name">Continue For Loop</span> and <span class="name">Continue For Loop If</span> keywords can be used
+directly inside a for loop or in a keyword that the loop uses. In both cases
+rest of the keywords in that iteration are skipped and execution continues
+from the next iteration. If these keywords are used on the last iteration,
+execution continues after the loop. It is an error to use these keywords
+outside a for loop.</p>
 <table border="1" class="example docutils">
 <caption>Continue for loop example</caption>
 <colgroup>
 <col width="16%" />
 <col width="15%" />
-<col width="14%" />
-<col width="22%" />
-<col width="17%" />
-<col width="8%" />
-<col width="8%" />
-</colgroup>
-<thead valign="bottom">
-<tr><th class="head">Test Case</th>
-<th class="head">Action</th>
-<th class="head">Argument</th>
-<th class="head">Argument</th>
-<th class="head">Argument</th>
-<th class="head">Argument</th>
-<th class="head">Argument</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr><td>Continue Example</td>
-<td>${text}=</td>
-<td>Set Variable</td>
-<td>${EMPTY}</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr><td></td>
-<td>:FOR</td>
-<td>${var}</td>
-<td>IN</td>
-<td>one</td>
-<td>two</td>
-<td>three</td>
-</tr>
-<tr><td></td>
-<td>&nbsp;</td>
-<td>Run Keyword If</td>
-<td>'${var}' == 'two'</td>
-<td>Continue For Loop</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr><td></td>
-<td>&nbsp;</td>
-<td>${text}=</td>
-<td>Set Variable</td>
-<td>${text}${var}</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr><td></td>
-<td>Should Be Equal</td>
-<td>${text}</td>
-<td>onethree</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-</tbody>
-</table>
-<p>To conditionally continue for loop, you can use <span class="name">Continue For Loop If</span> instead of <cite>Run Keyword If</cite>.</p>
-<table border="1" class="example docutils">
-<caption>Example of Continue For Loop If</caption>
-<colgroup>
-<col width="17%" />
-<col width="16%" />
 <col width="21%" />
-<col width="17%" />
-<col width="14%" />
+<col width="18%" />
+<col width="13%" />
 <col width="8%" />
 <col width="8%" />
 </colgroup>
@@ -9775,14 +9718,14 @@ libraries.</p>
 <tr><td></td>
 <td>&nbsp;</td>
 <td>Continue For Loop If</td>
-<td>'${var}' == 'two</td>
+<td>'${var}' == 'two'</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 </tr>
 <tr><td></td>
 <td>&nbsp;</td>
-<td>${text}=</td>
+<td>${text} =</td>
 <td>Set Variable</td>
 <td>${text}${var}</td>
 <td>&nbsp;</td>
@@ -9798,9 +9741,12 @@ libraries.</p>
 </tr>
 </tbody>
 </table>
+<p>For more information about these keywords, including usage examples, see their
+documentation in the <a class="reference internal" href="#builtin-library">BuiltIn</a> library.</p>
 <div class="note">
 <p class="first admonition-title">Note</p>
-<p class="last">Keywords Continue For Loop and Continue For Loop If are new in Robot Framework 2.8.</p>
+<p class="last">Both <span class="name">Continue For Loop</span> and <span class="name">Continue For Loop If</span>
+were added in Robot Framework 2.8.</p>
 </div>
 </div>
 <div class="section" id="removing-unnecessary-keywords-from-outputs">
@@ -16879,7 +16825,7 @@ to <a class="reference internal" href="#mailing-lists">mailing list</a>.</p>
 <div class="footer">
 <hr class="footer" />
 <p>Generated by <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>. Syntax highlighting by <a class="reference external" href="http://pygments.org/">Pygments</a>.</p>
-<p>Generated on: 2013-05-20 10:54 UTC.
+<p>Generated on: 2013-05-21 08:51 UTC.
 </p>
 
 </div>
