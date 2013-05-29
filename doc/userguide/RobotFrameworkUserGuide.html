@@ -10617,7 +10617,7 @@ problematic, a good workaround is giving them separately in the
 required order. This easily leads to overly long start-up commands,
 but <a class="reference internal" href="#argument-files">argument files</a> allow listing files nicely one file per line.</p>
 <p>It is also possible to <a class="reference internal" href="#randomizing-execution-order">randomize the execution order</a> using
-the <span class="opt">--runmode</span> option.</p>
+the <span class="opt">--randomize</span> option.</p>
 </div>
 <div class="section" id="passing-execution">
 <h4><a class="toc-backref" href="#id556">Passing execution</a></h4>
@@ -10744,18 +10744,33 @@ custom keywords can use <a class="reference internal" href="#stopping-test-execu
 </div>
 <div class="section" id="exitonfailure-mode">
 <h4><a class="toc-backref" href="#id566"><span class="opt">ExitOnFailure</span> mode</a></h4>
-<p>If option <span class="opt">--runmode</span> is used with value <span class="opt">ExitOnFailure</span>
-(case-insensitive), the execution of tests stops immediately if
-a <a class="reference internal" href="#setting-criticality">critical test</a> fails and the remaining tests are marked as failed.</p>
+<p>If option <span class="opt">--exitonfailure</span> (case-insensitive) is used, the execution of
+tests stops immediately if a <a class="reference internal" href="#setting-criticality">critical test</a> fails. Also the remaining tests
+are marked as failed.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p>Prior to Robot Framework 2.8, this behaviour is achieved by
+using <span class="opt">--runmode ExitOnFailure</span> (case-insensitive).</p>
+<p class="last">Option <span class="opt">--runmode</span> is deprecated in 2.8 and will be removed
+in the future.</p>
+</div>
 </div>
 <div class="section" id="handling-teardowns">
 <h4><a class="toc-backref" href="#id567">Handling teardowns</a></h4>
 <p>By default teardowns for tests and suites that have been started are executed
 even if test execution is stopped using one of the methods above. This allows
 clean-up activities to be run regardless how execution ends.</p>
-<p>Starting from Robot Framework 2.5.2, teardowns are skipped when the execution is
-stopped if the <span class="opt">--runmode SkipTeardownOnExit</span> command line option is used.
-This can be useful if clean-up takes a lot of time.</p>
+<p>Starting from Robot Framework 2.8, teardowns are skipped when the execution is
+stopped and command line option <span class="opt">--SkipTeardownOnExit</span> (case-insensitive)
+is used.</p>
+<p>This can be useful if clean-up takes a lot of time.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p>Prior to Robot Framework 2.8, this behaviour is achieved by
+using <span class="opt">--runmode SkipTearDownOnExit</span> (case-insensitive).</p>
+<p class="last">Option <span class="opt">--runmode</span> is deprecated in 2.8 and will be removed
+in the future.</p>
+</div>
 </div>
 </div>
 </div>
@@ -11198,9 +11213,15 @@ illustrate how to use these options:</p>
 run normally otherwise, but the keywords coming from the test libraries
 are not executed at all. The dry run mode can be used to validate the
 test data; if the dry run passes, the data should be syntactically
-correct.  This mode is triggered using option <span class="opt">--runmode DryRun</span>
-(case-insensitive) and it is supported starting from Robot Framework
-2.5.</p>
+correct. This mode is triggered using option <span class="opt">--dryrun</span>
+(case-insensitive) and supported starting from Robot Framework 2.8.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p>Prior to Robot Framework 2.8, dry run mode is triggered using
+option <span class="opt">--runmode dryrun</span> (case-insensitive).</p>
+<p class="last">Option <span class="opt">--runmode</span> is deprecated in 2.8 and will be removed
+in the future.</p>
+</div>
 <p>The dry run execution may fail for following reasons:</p>
 <blockquote>
 <ul class="simple">
@@ -11220,24 +11241,34 @@ limitation may be lifted in the future releases.</p>
 </div>
 <div class="section" id="randomizing-execution-order">
 <h3><a class="toc-backref" href="#id592">3.4.7&nbsp;&nbsp;&nbsp;Randomizing execution order</a></h3>
-<p>The <span class="opt">--runmode</span> option can also be used to randomize the test
-execution order. This is done using the different values explained
-below.</p>
+<p>The test execution order can be randomized using option
+<span class="opt">--randomize &lt;what&gt;</span>, where <span class="opt">&lt;what&gt;</span> is one of the following:</p>
 <dl class="docutils">
-<dt><span class="opt">random:test</span></dt>
-<dd>Test cases inside each test suite are executed in random
-order.</dd>
-<dt><span class="opt">random:suite</span></dt>
+<dt><span class="opt">tests</span></dt>
+<dd>Test cases inside each test suite are executed in random order.</dd>
+<dt><span class="opt">suites</span></dt>
 <dd>All test suites are executed in a random order, but test cases inside
 suites are run in the order they are defined.</dd>
-<dt><span class="opt">random:all</span></dt>
-<dd>Both test cases and test suites are executed in a random
-order.</dd>
+<dt><span class="opt">all</span></dt>
+<dd>Both test cases and test suites are executed in a random order.</dd>
+<dt><span class="opt">none</span></dt>
+<dd>Neither execution order of test nor suites is randomized.
+This value can be used to override the earlier value set with
+<span class="opt">--randomize</span>.</dd>
 </dl>
 <p>Example:</p>
 <pre class="literal-block">
-pybot --runmode random:test my_test.txt
+pybot --randomize tests my_test.txt
 </pre>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p>Prior to Robot Framework 2.8, randomization is triggered using option
+<span class="opt">--runmode &lt;mode&gt;</span>, where &lt;mode&gt; is either <span class="opt">Random:Test</span>,
+<span class="opt">Random:Suite</span> or <span class="opt">Random:All</span>.
+These values work respectively as with option <span class="opt">--randomize</span>.</p>
+<p class="last">Option <span class="opt">--runmode</span> is deprecated in 2.8 and will be removed
+in the future.</p>
+</div>
 </div>
 <div class="section" id="controlling-console-output">
 <h3><a class="toc-backref" href="#id593">3.4.8&nbsp;&nbsp;&nbsp;Controlling console output</a></h3>
@@ -16148,10 +16179,28 @@ in test cases. Error codes are returned normally.</td></tr>
 </tr>
 <tr><td>&nbsp;</td><td>Executes tests also if the top level <a class="reference internal" href="#when-no-tests-match-selection">test suite is
 empty</a>.</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">--dryrun</span></kbd></td>
+<td>When <a class="reference internal" href="#dry-run">dry run</a>, keywords coming from the test
+libraries are not executed at all.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--exitonfailure</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><a class="reference internal" href="#exitonfailure-mode">Stops execution</a> immediately if a critical test fails.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--skipteardownonexit</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><a class="reference internal" href="#handling-teardowns">Skips teardowns</a> when the execution is stopped.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--randomize <var>&lt;what&gt;</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><a class="reference internal" href="#randomizing-execution-order">Randomizes the test execution order</a>.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--runmode <var>&lt;mode&gt;</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>Sets the execution mode for this test run.
+<tr><td>&nbsp;</td><td>Deprecated in Robot Framework 2.8, please use the
+the respective options above.
+Sets the execution mode for this test run.
 Valid modes are <a class="reference internal" href="#exitonfailure-mode">ExitOnFailure</a>, <a class="reference internal" href="#handling-teardowns">SkipTeardownOnExit</a>,
 <a class="reference internal" href="#dry-run">DryRun</a>, and <a class="reference internal" href="#randomizing-execution-order">Random</a>:&lt;what&gt;.</td></tr>
 <tr><td class="option-group" colspan="2">
@@ -16892,7 +16941,7 @@ to <a class="reference internal" href="#mailing-lists">mailing list</a>.</p>
 <div class="footer">
 <hr class="footer" />
 <p>Generated by <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>. Syntax highlighting by <a class="reference external" href="http://pygments.org/">Pygments</a>.</p>
-<p>Generated on: 2013-05-29 12:47 UTC.
+<p>Generated on: 2013-05-29 12:52 UTC.
 </p>
 
 </div>
