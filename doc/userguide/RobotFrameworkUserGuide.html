@@ -10517,7 +10517,7 @@ and how to stop the whole test execution gracefully.</p>
 <li><a class="reference internal" href="#pressing-ctrl-c" id="id562">Pressing <span class="code">Ctrl-C</span></a></li>
 <li><a class="reference internal" href="#using-signals" id="id563">Using signals</a></li>
 <li><a class="reference internal" href="#using-keywords" id="id564">Using keywords</a></li>
-<li><a class="reference internal" href="#exitonfailure-mode" id="id565"><span class="opt">ExitOnFailure</span> mode</a></li>
+<li><a class="reference internal" href="#stopping-when-first-test-case-fails" id="id565">Stopping when first test case fails</a></li>
 <li><a class="reference internal" href="#handling-teardowns" id="id566">Handling teardowns</a></li>
 </ul>
 </li>
@@ -10715,8 +10715,7 @@ to accomplish this are explained below. In all these cases the remaining
 test cases are marked failed.</p>
 <div class="note">
 <p class="first admonition-title">Note</p>
-<p class="last">Most of these features are new in Robot Framework 2.5. Only
-the <a class="reference internal" href="#exitonfailure-mode">ExitOnFailure mode</a> is supported in earlier versions.</p>
+<p class="last">Most of these features are new in Robot Framework 2.5.</p>
 </div>
 <div class="section" id="pressing-ctrl-c">
 <h4><a class="toc-backref" href="#id562">Pressing <span class="code">Ctrl-C</span></a></h4>
@@ -10742,34 +10741,32 @@ Similarly also the second signal stops the execution forcefully.</p>
 separate <span class="name">Fatal Error</span> <a class="reference internal" href="#builtin-library">BuiltIn keyword</a> for this purpose, and
 custom keywords can use <a class="reference internal" href="#stopping-test-execution">fatal exceptions</a> when they fail.</p>
 </div>
-<div class="section" id="exitonfailure-mode">
-<h4><a class="toc-backref" href="#id565"><span class="opt">ExitOnFailure</span> mode</a></h4>
-<p>If option <span class="opt">--exitonfailure</span> (case-insensitive) is used, the execution of
-tests stops immediately if a <a class="reference internal" href="#setting-criticality">critical test</a> fails. Also the remaining tests
+<div class="section" id="stopping-when-first-test-case-fails">
+<h4><a class="toc-backref" href="#id565">Stopping when first test case fails</a></h4>
+<p>If option <span class="opt">--exitonfailure</span> is used, test execution stops
+immediately if any <a class="reference internal" href="#setting-criticality">critical test</a> fails. Also the remaining tests
 are marked as failed.</p>
 <div class="note">
 <p class="first admonition-title">Note</p>
-<p>Prior to Robot Framework 2.8, this behaviour is achieved by
-using <span class="opt">--runmode ExitOnFailure</span> (case-insensitive).</p>
-<p class="last">Option <span class="opt">--runmode</span> is deprecated in 2.8 and will be removed
-in the future.</p>
+<p class="last">Prior to Robot Framework 2.8, this behaviour was achieved by
+using <span class="opt">--runmode exitonfailure</span>. Option <span class="opt">--runmode</span>
+was deprecated in 2.8 and will be removed in the future.</p>
 </div>
 </div>
 <div class="section" id="handling-teardowns">
 <h4><a class="toc-backref" href="#id566">Handling teardowns</a></h4>
-<p>By default teardowns for tests and suites that have been started are executed
-even if test execution is stopped using one of the methods above. This allows
-clean-up activities to be run regardless how execution ends.</p>
-<p>Starting from Robot Framework 2.8, teardowns are skipped when the execution is
-stopped and command line option <span class="opt">--SkipTeardownOnExit</span> (case-insensitive)
-is used.</p>
-<p>This can be useful if clean-up takes a lot of time.</p>
+<p>By default teardowns of the tests and suites that have been started are
+executed even if the test execution is stopped using one of the methods
+above. This allows clean-up activities to be run regardless how execution
+ends.</p>
+<p>It is also possible to skip teardowns when execution is stopped by using
+<span class="opt">--skipteardownonexit</span> option. This can be useful if, for example,
+clean-up tasks take a lot of time.</p>
 <div class="note">
 <p class="first admonition-title">Note</p>
-<p>Prior to Robot Framework 2.8, this behaviour is achieved by
-using <span class="opt">--runmode SkipTearDownOnExit</span> (case-insensitive).</p>
-<p class="last">Option <span class="opt">--runmode</span> is deprecated in 2.8 and will be removed
-in the future.</p>
+<p class="last">Prior to Robot Framework 2.8, this behaviour was achieved by
+using <span class="opt">--runmode skipteardownonexit</span>. Option <span class="opt">--runmode</span>
+was deprecated in 2.8 and will be removed in the future.</p>
 </div>
 </div>
 </div>
@@ -11213,15 +11210,7 @@ illustrate how to use these options:</p>
 run normally otherwise, but the keywords coming from the test libraries
 are not executed at all. The dry run mode can be used to validate the
 test data; if the dry run passes, the data should be syntactically
-correct. This mode is triggered using option <span class="opt">--dryrun</span>
-(case-insensitive) and supported starting from Robot Framework 2.8.</p>
-<div class="note">
-<p class="first admonition-title">Note</p>
-<p>Prior to Robot Framework 2.8, dry run mode is triggered using
-option <span class="opt">--runmode dryrun</span> (case-insensitive).</p>
-<p class="last">Option <span class="opt">--runmode</span> is deprecated in 2.8 and will be removed
-in the future.</p>
-</div>
+correct. This mode is triggered using option <span class="opt">--dryrun</span>.</p>
 <p>The dry run execution may fail for following reasons:</p>
 <blockquote>
 <ul class="simple">
@@ -11237,6 +11226,12 @@ resolved.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">The dry run mode does not validate variables. This
 limitation may be lifted in the future releases.</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">Prior to Robot Framework 2.8, the dry run mode was activate using
+option <span class="opt">--runmode dryrun</span>. Option <span class="opt">--runmode</span> was
+deprecated in 2.8 and will be removed in the future.</p>
 </div>
 </div>
 <div class="section" id="randomizing-execution-order">
@@ -11264,8 +11259,8 @@ pybot --randomize tests my_test.txt
 <p class="first admonition-title">Note</p>
 <p>Prior to Robot Framework 2.8, randomization is triggered using option
 <span class="opt">--runmode &lt;mode&gt;</span>, where &lt;mode&gt; is either <span class="opt">Random:Test</span>,
-<span class="opt">Random:Suite</span> or <span class="opt">Random:All</span>.
-These values work respectively as with option <span class="opt">--randomize</span>.</p>
+<span class="opt">Random:Suite</span> or <span class="opt">Random:All</span>. These values work the
+same way as matching values for <span class="opt">--randomize</span>.</p>
 <p class="last">Option <span class="opt">--runmode</span> is deprecated in 2.8 and will be removed
 in the future.</p>
 </div>
@@ -16098,11 +16093,11 @@ when <a class="reference internal" href="#starting-test-execution">executing tes
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-x</span>, <span class="option">--xunitfile <var>&lt;file&gt;</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>Sets the path to the generated <a class="reference internal" href="#xunit-compatible-result-file">XUnit compatible result file</a>.</td></tr>
+<tr><td>&nbsp;</td><td>Sets the path to the generated <a class="reference internal" href="#xunit-compatible-result-file">xUnit compatible result file</a>.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--xunitskipnoncritical</span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>Mark non-critical tests on <a class="reference internal" href="#xunit-compatible-result-file">XUnit compatible result file</a> as skipped.</td></tr>
+<tr><td>&nbsp;</td><td>Mark non-critical tests on <a class="reference internal" href="#xunit-compatible-result-file">xUnit compatible result file</a> as skipped.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-b</span>, <span class="option">--debugfile <var>&lt;file&gt;</var></span></kbd></td>
 </tr>
@@ -16181,32 +16176,31 @@ in test cases. Error codes are returned normally.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--runemptysuite</span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>Executes tests also if the top level <a class="reference internal" href="#when-no-tests-match-selection">test suite is
-empty</a>.</td></tr>
+<tr><td>&nbsp;</td><td>Executes tests also if the selected <a class="reference internal" href="#when-no-tests-match-selection">test suites are empty</a>.</td></tr>
 <tr><td class="option-group">
 <kbd><span class="option">--dryrun</span></kbd></td>
-<td>When <a class="reference internal" href="#dry-run">dry run</a>, keywords coming from the test
-libraries are not executed at all.</td></tr>
+<td>In the <a class="reference internal" href="#dry-run">dry run</a> mode tests are run without executing
+keywords originating from test libraries. Useful for
+validating test data syntax.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--exitonfailure</span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td><a class="reference internal" href="#exitonfailure-mode">Stops execution</a> immediately if a critical test fails.</td></tr>
+<tr><td>&nbsp;</td><td><a class="reference internal" href="#stopping-when-first-test-case-fails">Stops execution</a> immediately if a critical test fails.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--skipteardownonexit</span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td><a class="reference internal" href="#handling-teardowns">Skips teardowns</a> when the execution is stopped.</td></tr>
+<tr><td>&nbsp;</td><td><a class="reference internal" href="#handling-teardowns">Skips teardowns</a> is test execution is prematurely stopped.</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">--randomize <var>&lt;what&gt;</var></span></kbd></td>
+<kbd><span class="option">--randomize <var>&lt;all|suites|tests|none&gt;</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td><a class="reference internal" href="#randomizing-execution-order">Randomizes the test execution order</a>.</td></tr>
+<tr><td>&nbsp;</td><td><a class="reference internal" href="#randomizing-execution-order">Randomizes</a> test execution order.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--runmode <var>&lt;mode&gt;</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>Deprecated in Robot Framework 2.8, please use the
-the respective options above.
-Sets the execution mode for this test run.
-Valid modes are <a class="reference internal" href="#exitonfailure-mode">ExitOnFailure</a>, <a class="reference internal" href="#handling-teardowns">SkipTeardownOnExit</a>,
-<a class="reference internal" href="#dry-run">DryRun</a>, and <a class="reference internal" href="#randomizing-execution-order">Random</a>:&lt;what&gt;.</td></tr>
+<tr><td>&nbsp;</td><td>Deprecated in Robot Framework 2.8. Use separate
+<span class="opt">--dryrun</span>, <span class="opt">--exitonfailure</span>,
+<span class="opt">--skipteardownonexit</span> and <span class="opt">--randomize</span>
+options instead.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-W</span>, <span class="option">--monitorwidth <var>&lt;chars&gt;</var></span></kbd></td>
 </tr>
@@ -16308,11 +16302,11 @@ Valid modes are <a class="reference internal" href="#exitonfailure-mode">ExitOnF
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-x</span>, <span class="option">--xunitfile <var>&lt;file&gt;</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>Sets the path to the generated <a class="reference internal" href="#xunit-compatible-result-file">XUnit compatible result file</a>.</td></tr>
+<tr><td>&nbsp;</td><td>Sets the path to the generated <a class="reference internal" href="#xunit-compatible-result-file">xUnit compatible result file</a>.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--xunitskipnoncritical</span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>Mark non-critical tests on <a class="reference internal" href="#xunit-compatible-result-file">XUnit compatible result file</a> as skipped.</td></tr>
+<tr><td>&nbsp;</td><td>Mark non-critical tests on <a class="reference internal" href="#xunit-compatible-result-file">xUnit compatible result file</a> as skipped.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-T</span>, <span class="option">--timestampoutputs</span></kbd></td>
 </tr>
@@ -16387,8 +16381,8 @@ in test cases. Error codes are returned normally.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--processemptysuite</span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>Processes an output file even if the top level <a class="reference internal" href="#when-no-tests-match-selection">test suite is
-empty</a>.</td></tr>
+<tr><td>&nbsp;</td><td>Processes output files even if files contain
+<a class="reference internal" href="#when-no-tests-match-selection">empty test suites</a>.</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-E</span>, <span class="option">--escape <var>&lt;what:with&gt;</var></span></kbd></td>
 </tr>
@@ -16944,7 +16938,7 @@ to <a class="reference internal" href="#mailing-lists">mailing list</a>.</p>
 <div class="footer">
 <hr class="footer" />
 <p>Generated by <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>. Syntax highlighting by <a class="reference external" href="http://pygments.org/">Pygments</a>.</p>
-<p>Generated on: 2013-05-31 09:35 UTC.
+<p>Generated on: 2013-05-31 10:57 UTC.
 </p>
 
 </div>
