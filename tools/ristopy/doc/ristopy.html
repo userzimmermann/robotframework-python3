@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.9.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.10: http://docutils.sourceforge.net/" />
 <title>risto.py -- Robot Framework's Historical Reporting Tool</title>
 <style type="text/css">
 
@@ -736,10 +736,8 @@ path/to/*.xml
 <div class="section" id="installation">
 <h1><a class="toc-backref" href="#id4">Installation</a></h1>
 <p><span class="prog">risto.py</span> itself does not need to be installed, simply running
-it from the command line is enough, but it has some preconditions. The
-most obvious one is Python, and versions 2.5 and 2.4 have been
-tested. Some Robot Framework internal modules are also needed, and
-thus Robot Framework version 1.8 or newer is required.</p>
+it from the command line is enough. It has some preconditions, though,
+first ones being Robot Framework and Python.</p>
 <p>The Matplotlib tool is used for plotting graphs, and it needs to be
 installed separately. Matplotlib has its own preconditions, and at
 least NumPy needs to be installed. The default Matplotlib installation
@@ -748,17 +746,12 @@ are needed, some extra back-ends may need to be installed.
 Additionally, you may need to install graphical front-ends to be able
 to use Matplotlib's own viewer for opening graphs without saving them
 to a file.</p>
-<p><span class="prog">risto.py</span> reads statistics from XML output files using the
-ElementTree module. Python 2.5 and newer have this module in standard
-library, but for older versions it needs to be installed separately.</p>
 <p>Links to the needed software:</p>
 <dl class="docutils">
 <dt>Matplotlib</dt>
 <dd><a class="reference external" href="http://matplotlib.sourceforge.net/">http://matplotlib.sourceforge.net/</a></dd>
 <dt>NumPy</dt>
 <dd><a class="reference external" href="http://numpy.scipy.org/">http://numpy.scipy.org/</a></dd>
-<dt>ElementTree</dt>
-<dd><a class="reference external" href="http://effbot.org/zone/element-index.htm">http://effbot.org/zone/element-index.htm</a></dd>
 </dl>
 </div>
 <div class="section" id="screenshots">
@@ -824,7 +817,7 @@ path/*/output.xml
 </div>
 <div class="footer">
 <hr class="footer" />
-Generated on: 2013-02-26 09:13 UTC.
+Generated on: 2013-06-11 13:29 UTC.
 
 </div>
 </body>
