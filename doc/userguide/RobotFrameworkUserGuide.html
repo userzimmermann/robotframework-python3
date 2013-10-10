@@ -2236,16 +2236,16 @@ source code:</p>
 <p>In addition to that, non-breaking spaces are replaced with normal spaces.
 This is done to avoid hard-to-debug errors
 when a non-breaking space is accidentally used instead of a normal space.</p>
-<p>If leading, trailing, or consecutive spaces are needed, they must either be
-<a class="reference internal" href="#prevent-ignoring-spaces">escaped</a>. Newlines, carriage returns, tabs, and non-breaking spaces can be
+<p>If leading, trailing, or consecutive spaces are needed, they <a class="reference internal" href="#prevent-ignoring-spaces">must be
+escaped</a>. Newlines, carriage returns, tabs, and non-breaking spaces can be
 created using <a class="reference internal" href="#escape-sequences">escape sequences</a> <span class="code">\n</span>, <span class="code">\r</span>, <span class="code">\t</span>, and
 <span class="code">\xA0</span> respectively.</p>
 </div>
 <div class="section" id="escaping">
 <h4><a class="toc-backref" href="#id413">Escaping</a></h4>
-<p>The escape character in Robot Framework test data is the backslash (<span class="code">\</span>),
+<p>The escape character in Robot Framework test data is the backslash (<span class="code">\</span>)
 and additionally <a class="reference internal" href="#built-in-variables">built-in variables</a> <span class="var">${EMPTY}</span> and <span class="var">${SPACE}</span>
-are often used for escaping. Different escaping mechanisms are
+can often be used for escaping. Different escaping mechanisms are
 discussed in the sections below.</p>
 <div class="section" id="escaping-special-characters">
 <h5>Escaping special characters</h5>
@@ -2290,7 +2290,7 @@ so that their literal values are used.</p>
 <td><span class="code">| Run | ps \| grep xxx |</span></td>
 </tr>
 <tr><td><span class="code">\\</span></td>
-<td>Backlash character, never escapes anything.</td>
+<td>Backslash character, never escapes anything.</td>
 <td><span class="code">c:\\temp, \\${var}</span></td>
 </tr>
 </tbody>
@@ -2317,19 +2317,19 @@ in the test data.</p>
 <tbody valign="top">
 <tr><td><span class="code">\n</span></td>
 <td>Newline character.</td>
-<td><span class="code">first line\n2nd line</span>.</td>
+<td><span class="code">first line\n2nd line</span></td>
 </tr>
 <tr><td><span class="code">\r</span></td>
 <td>Carriage return character</td>
-<td><span class="code">text\rmore text</span>.</td>
+<td><span class="code">text\rmore text</span></td>
 </tr>
 <tr><td><span class="code">\t</span></td>
 <td>Tab character.</td>
-<td><span class="code">text\tmore text</span>.</td>
+<td><span class="code">text\tmore text</span></td>
 </tr>
 <tr><td><span class="code">\xhh</span></td>
 <td>Character with hex value <span class="code">hh</span>.</td>
-<td><span class="code">null byte: \x00, ä: \xe4</span></td>
+<td><span class="code">null byte: \x00, ä: \xE4</span></td>
 </tr>
 <tr><td><span class="code">\uhhhh</span></td>
 <td>Character with hex value <span class="code">hhhh</span>.</td>
@@ -2343,8 +2343,27 @@ in the test data.</p>
 </table>
 <div class="note">
 <p class="first admonition-title">Note</p>
-<p class="last"><span class="code">\x</span>, <span class="code">\u</span> and <span class="code">\U</span> escape sequences are new in
-Robot Framework 2.8.2.</p>
+<p class="last">All strings created in the test data, including characters like
+<span class="code">\x02</span>, are Unicode and must be explicitly converted to
+byte strings if needed. This can be done, for example, using
+<span class="name">Encode String To Bytes</span> keyword in the <a class="reference external" href="../libraries/String.html">String</a> library or
+something like <span class="code">str(value)</span> or <span class="code">value.encode('UTF-8')</span>
+in Python code.</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">If invalid hexadecimal values are used with <span class="code">\x</span>, <span class="code">\u</span>
+or <span class="code">\U</span> escapes, the end result is the original value without
+the backslash character. For example, <span class="code">\xAX</span> (not hex) and
+<span class="code">\U00110000</span> (too large value) result with <span class="code">xAX</span>
+and <span class="code">U00110000</span>, respectively. This behavior may change in
+the future, though.</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="#built-in-variable">Built-in variable</a> <span class="var">${\n}</span> can be used if operating system
+dependent line terminator is needed (<span class="code">\r\n</span> on Windows and
+<span class="code">\n</span> elsewhere).</p>
 </div>
 <div class="note">
 <p class="first admonition-title">Note</p>
@@ -2355,6 +2374,11 @@ is to allow wrapping long lines containing newlines when using
 the HTML format, but the same logic is used also with other formats.
 An exception to this rule is that the whitespace character is not
 ignored inside the <a class="reference internal" href="#extended-variable-syntax">extended variable syntax</a>.</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last"><span class="code">\x</span>, <span class="code">\u</span> and <span class="code">\U</span> escape sequences are new in
+Robot Framework 2.8.2.</p>
 </div>
 </div>
 <div class="section" id="prevent-ignoring-empty-cells">
@@ -2367,8 +2391,8 @@ be escaped regardless the test data format, and when using the
 <a class="reference internal" href="#built-in-variable">built-in variable</a> <span class="var">${EMPTY}</span>. The latter is typically recommended
 as it is easier to understand. An exception to this recommendation is escaping
 the indented cells in <a class="reference internal" href="#for-loops">for loops</a> with a backslash when using the
-<a class="reference internal" href="#space-separated-format">space separated format</a>. All this is illustrated in the following examples
-first in HTML and then in the space separated plain text format:</p>
+<a class="reference internal" href="#space-separated-format">space separated format</a>. All these cases are illustrated in the following
+examples first in HTML and then in the space separated plain text format:</p>
 <table border="1" class="example docutils">
 <colgroup>
 <col width="22%" />
@@ -6091,7 +6115,7 @@ started from.</td>
 </tr>
 <tr><td>${/}</td>
 <td>The system directory path separator. <span class="code">/</span> in UNIX-like
-systems, <span class="code">\</span> in Windows.</td>
+systems and <span class="code">\</span> in Windows.</td>
 </tr>
 <tr><td>${:}</td>
 <td>The system path element separator. <span class="code">:</span> in UNIX-like
@@ -6099,7 +6123,7 @@ systems and <span class="code">;</span> in Windows.</td>
 </tr>
 <tr><td>${\n}</td>
 <td>The system line separator. <span class="code">\n</span> in UNIX-like systems and
-systems and <span class="code">\r\n</span> in Windows. New in version 2.7.5.</td>
+<span class="code">\r\n</span> in Windows. New in version 2.7.5.</td>
 </tr>
 </tbody>
 </table>
@@ -17371,7 +17395,7 @@ to <a class="reference internal" href="#mailing-lists">mailing list</a>.</p>
 <div class="footer">
 <hr class="footer" />
 <p>Generated by <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>. Syntax highlighting by <a class="reference external" href="http://pygments.org/">Pygments</a>.</p>
-<p>Generated on: 2013-10-09 13:11 UTC.
+<p>Generated on: 2013-10-10 15:28 UTC.
 </p>
 
 </div>
