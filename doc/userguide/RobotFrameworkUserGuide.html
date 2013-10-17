@@ -371,17 +371,14 @@ table.messages td.warn {
     font-size: 0.9em;
 }
 .doc > * {
-    margin: 10px 10px 0 10px;
+    margin: 0.7em 1em 0.1em 1em;
     padding: 0;
 }
-.doc > p {
-    margin: 10px 0 0 0;
+.doc > p, .doc > h1, .doc > h2, .doc > h3, .doc > h4 {
+    margin: 0.7em 0 0.1em 0;
 }
 .doc > *:first-child {
-    margin-top: 0;
-}
-.doc li {
-    list-style: square inside;
+    margin-top: 0.1em;
 }
 .doc table {
     border: 1px solid gray;
@@ -390,10 +387,25 @@ table.messages td.warn {
     empty-cells: show;
     font-size: 0.9em;
 }
-.doc table td {
+.doc table th, .doc table td {
     border: 1px solid gray;
     padding: 0.1em 0.3em;
     height: 1.2em;
+}
+.doc table th {
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+.doc pre {
+    font-size: 1.1em;
+    background: #F4F4FF;
+}
+.doc li {
+    list-style-position: inside;
+    list-style-type: square;
+}
+.doc img {
+    border: 1px solid gray;
 }
 .doc hr {
     background: gray;
@@ -2105,8 +2117,8 @@ approach.
 </pre></div>
 <div class="note">
 <p class="first admonition-title">Note</p>
-<p class="last">Empty cells in the first column of simple tables needs to be escaped.
-The above example uses <span class="code">\</span> and <span class="code">..</span> could also be used.</p>
+<p class="last">Empty cells in the first column of simple tables need to be escaped.
+The above example uses <span class="code">\</span> but <span class="code">..</span> could also be used.</p>
 </div>
 <div class="note">
 <p class="first admonition-title">Note</p>
@@ -2384,8 +2396,8 @@ Robot Framework 2.8.2.</p>
 <div class="section" id="prevent-ignoring-empty-cells">
 <h5>Prevent ignoring empty cells</h5>
 <p>If empty values are needed as arguments for keywords or otherwise, they often
-need to be escaped to prevent them to be <a class="reference internal" href="#ignored-data">ignored</a>. Empty trailing cells must
-be escaped regardless the test data format, and when using the
+need to be escaped to prevent them from being <a class="reference internal" href="#ignored-data">ignored</a>. Empty trailing cells
+must be escaped regardless of the test data format, and when using the
 <a class="reference internal" href="#space-separated-format">space separated format</a> all empty values must be escaped.</p>
 <p>Empty cells can be escaped either with the backslash character or with
 <a class="reference internal" href="#built-in-variable">built-in variable</a> <span class="var">${EMPTY}</span>. The latter is typically recommended
@@ -2457,9 +2469,10 @@ examples first in HTML and then in the space separated plain text format:</p>
 <div class="section" id="prevent-ignoring-spaces">
 <h5>Prevent ignoring spaces</h5>
 <p>Because leading, trailing, and consecutive spaces in cells are <a class="reference internal" href="#handling-whitespace">ignored</a>, they
-need to escaped if needed as arguments to keywords or otherwise. Similarly
-as when preventing ignoring empty cells, it is possible to do that either
-using the backslash character or using <a class="reference internal" href="#built-in-variable">built-in variable</a> <span class="var">${SPACE}</span>.</p>
+need to be escaped if they are needed as arguments to keywords or otherwise.
+Similarly as when preventing ignoring empty cells, it is possible to do that
+either using the backslash character or using <a class="reference internal" href="#built-in-variable">built-in variable</a>
+<span class="var">${SPACE}</span>.</p>
 <table border="1" class="tabular docutils">
 <caption>Escaping spaces examples</caption>
 <colgroup>
@@ -17243,26 +17256,31 @@ equal signs and the title text are mandatory.</p>
 </div>
 <div class="section" id="tables">
 <h3><a class="toc-backref" href="#id736">6.4.7&nbsp;&nbsp;&nbsp;Tables</a></h3>
-<p>Tables are created using the pipe character with whitespace around it
-as a cell boundary and the possibly automatically added newline character
-as a row separator:</p>
+<p>Tables are created using pipe characters with spaces around them
+as column separators and newlines as row separators. Header
+cells can be created by surrounding the cell content with equal signs
+and optional spaces like <span class="code">= Header =</span> or <span class="code">=Header=</span>. Tables
+cells can also contain links and formatting such as bold and italic:</p>
 <pre class="literal-block">
-| *A* | *B*   | *C*   |
-| _1_ | Hello | world |
+| =A= |  =B=  | = C =  |
+| _1_ | Hello | world! |
 | _2_ | Hi    |
 </pre>
-<p>The created table always has a thin border and the text is
-left-aligned. Formatting using bold and italic works also in table
-cells, so it is possible to create headers. Empty cells are automatically
-added to make rows equally long. For example, the above
-example would be formatted like this in HTML:</p>
+<p>The created table always has a thin border and normal text is left-aligned.
+Text in header cells is bold and centered. Empty cells are automatically
+added to make rows equally long. For example, the above example would be
+formatted like this in HTML:</p>
 <div class="doc">
-<table>
-  <tr><td><b>A</b></td><td><b>B</b></td><td><b>C</b></td>
-  <tr><td><i>1</i></td><td>Hello</td><td>world</td>
-  <tr><td><i>2</i></td><td>Hi</td><td></td>
-</table>
-</div></div>
+  <table>
+    <tr><th>A</th><th>B</th><th>C</th></tr>
+    <tr><td><i>1</i></td><td>Hello</td><td>world</td></tr>
+    <tr><td><i>2</i></td><td>Hi</td><td></td></tr>
+  </table>
+</div><div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">Support for table headers is a new feature in Robot Framework 2.8.2.</p>
+</div>
+</div>
 <div class="section" id="lists">
 <h3><a class="toc-backref" href="#id737">6.4.8&nbsp;&nbsp;&nbsp;Lists</a></h3>
 <p>Lists are created by starting a line with a hyphen and space ('- '). List items
@@ -17395,7 +17413,7 @@ to <a class="reference internal" href="#mailing-lists">mailing list</a>.</p>
 <div class="footer">
 <hr class="footer" />
 <p>Generated by <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>. Syntax highlighting by <a class="reference external" href="http://pygments.org/">Pygments</a>.</p>
-<p>Generated on: 2013-10-10 15:28 UTC.
+<p>Generated on: 2013-10-16 12:38 UTC.
 </p>
 
 </div>
