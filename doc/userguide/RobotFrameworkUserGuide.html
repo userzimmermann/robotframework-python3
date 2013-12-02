@@ -13011,9 +13011,9 @@ varargs with <a class="reference internal" href="#providing-arguments-to-test-li
 <p>Robot Framework 2.8 added the support for free keyword arguments using Python's
 <span class="code">**kwargs</span> syntax. How to use the syntax in the test data is discussed
 in <a class="reference internal" href="#free-keyword-arguments">Free keyword arguments</a> section under <a class="reference internal" href="#creating-test-cases">Creating test cases</a>. In this
-section we take a look at how to actually use it in custom test libraries.
-Because Java does not have similar keyword argument concept, this functionality
-is only available with Python based libraries.</p>
+section we take a look at how to actually use it in custom test libraries.</p>
+<p>Starting from Robot Framework 2.8.3, also Java libraries support the free
+keyword arguments.</p>
 <p>If you are already familiar how kwargs work with Python, understanding how
 they work with Robot Framework test libraries is rather simple. The example
 below shows the basic functionality.</p>
@@ -13021,8 +13021,13 @@ below shows the basic functionality.</p>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">stuff</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">print</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span>
 </pre></div>
+<p>Or the same in Java:</p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kt">void</span> <span class="nf">exampleKeyword</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">stuff</span><span class="o">):</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="nl">key:</span> <span class="n">stuff</span><span class="o">.</span><span class="na">keySet</span><span class="o">())</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">key</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">stuff</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">));</span>
+</pre></div>
 <table border="1" class="example docutils">
-<caption>Using keywords with python <span class="code">**kwargs</span></caption>
+<caption>Using keywords with <span class="code">**kwargs</span></caption>
 <colgroup>
 <col width="22%" />
 <col width="18%" />
@@ -13060,12 +13065,21 @@ value like <span class="code">foo=quux</span> as a keyword argument, it must be 
 like <span class="code">foo\=quux</span>.</p>
 <p>The following examples illustrate how normal arguments, varargs, and kwargs
 work together.</p>
+<p>The example keyword in python:</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">various_args</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="o">*</span><span class="n">varargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">print</span> <span class="s">&#39;arg:&#39;</span><span class="p">,</span> <span class="n">arg</span>
     <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">varargs</span><span class="p">:</span>
         <span class="k">print</span> <span class="s">&#39;vararg:&#39;</span><span class="p">,</span> <span class="n">value</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">print</span> <span class="s">&#39;kwarg:&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span>
+</pre></div>
+<p>and the same keyword implemented in java:</p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kt">void</span> <span class="nf">exampleKeyword</span><span class="o">(</span><span class="n">String</span> <span class="n">arg</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">varargs</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">kwargs</span><span class="o">):</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;arg:&quot;</span> <span class="o">+</span> <span class="n">arg</span><span class="o">);</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="nl">varg:</span> <span class="n">varargs</span><span class="o">)</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;vararg:&quot;</span> <span class="o">+</span> <span class="n">varg</span><span class="o">);</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="nl">key:</span> <span class="n">kwargs</span><span class="o">.</span><span class="na">keySet</span><span class="o">())</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">key</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">kwargs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">));</span>
 </pre></div>
 <table border="1" class="example docutils">
 <caption>Using defaults, varargs, and kwargs together</caption>
@@ -17670,7 +17684,7 @@ to <a class="reference internal" href="#mailing-lists">mailing list</a>.</p>
 <div class="footer">
 <hr class="footer" />
 <p>Generated by <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>. Syntax highlighting by <a class="reference external" href="http://pygments.org/">Pygments</a>.</p>
-<p>Generated on: 2013-12-02 09:16 UTC.
+<p>Generated on: 2013-12-02 12:14 UTC.
 </p>
 
 </div>
