@@ -1,3 +1,16 @@
+This repository is OBSOLETE
+===========================
+
+Robot Framework completely migrated to Git and moved to GitHub:
+
+https://github.com/robotframework/robotframework
+
+So did this fork:
+
+https://github.com/userzimmermann/robotframework/tree/python3
+
+----
+
 Robot Framework with Python 3.3+ compatibility
 ==============================================
 
