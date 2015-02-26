@@ -5,9 +5,15 @@ Robot Framework completely migrated to Git and moved to GitHub:
 
 https://github.com/robotframework/robotframework
 
-So did this fork:
+So I also migrated this fork to be based on the new Git repository
+and moved Python 3 compatibility development to a separate python3 branch:
 
 https://github.com/userzimmermann/robotframework/tree/python3
+
+My original Hg repository of this fork is still active
+and now serves as a mirror of the python3 branch of the new Git repository:
+
+https://bitbucket.org/userzimmermann/robotframework-python3
 
 ----
 
